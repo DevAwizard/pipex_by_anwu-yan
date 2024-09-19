@@ -1,11 +1,154 @@
-# pipex_by_anwu-yan
+![cover-pipex](https://github.com/user-attachments/assets/557e560b-87c0-4dd5-aaca-be94247a947b)
+
+### Table of Contents for Pipex Documentation
+
+## Table of Contents
+
+1. [Project Overview](#project-overview)
+    - [Introduction to Pipex](#introduction-to-pipex)
+    - [Objectives and Goals](#objectives-and-goals)
+2. [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Required Functions and Libraries](#required-functions-and-libraries)
+    - [Project Structure Overview](#project-structure-overview)
+3. [Program Usage](#program-usage)
+    - [How to Run the Program](#how-to-run-the-program)
+    - [Example Commands](#example-commands)
+    - [Expected Input and Output](#expected-input-and-output)
+4. [Core Logic and Implementation](#core-logic-and-implementation)
+    - [Setting up the PATH Environment](#setting-up-the-path-environment)
+    - [Command Parsing and Validation](#command-parsing-and-validation)
+    - [Pipe Creation and Redirection](#pipe-creation-and-redirection)
+    - [Forking Child Processes](#forking-child-processes)
+    - [Executing Commands with execve()](#executing-commands-with-execve)
+    - [Closing File Descriptors](#closing-file-descriptors)
+5. [Error Handling](#error-handling)
+    - [Common Errors and Handling](#common-errors-and-handling)
+    - [Systematic Error Messages](#systematic-error-messages)
+6. [Memory Management](#memory-management)
+    - [Dynamic Memory Allocation and Deallocation](#dynamic-memory-allocation-and-deallocation)
+    - [Avoiding Memory Leaks](#avoiding-memory-leaks)
+7. [Tester - Mandatory Part](#tester---mandatory-part)
+    - [Non-valid Cases](#non-valid-cases)
+    - [Valid Command Combinations for Two Commands](#valid-command-combinations-for-two-commands)
+
+
+### **Project Overview**
+
+#### **Introduction to Pipex**
+`Pipex` is a project aimed at understanding and implementing the piping mechanism in UNIX. The goal is to create a program that mimics the behavior of the shell in handling input/output redirection between commands. By doing this project, you will deepen your understanding of how UNIX pipes work, particularly in the context of system calls like `pipe()`, `fork()`, `dup2()`, and `execve()`.
+
+**Objective**: 
+- Replicate the functionality of the shell command:  
+  ```bash
+  < infile cmd1 | cmd2 > outfile
+  ```
+- `Pipex` takes two commands, reads input from a file, passes the output of the first command as input to the second command, and writes the final output to another file.
+
+
+### **Getting Started**
+
+#### **Prerequisites**
+- **System Requirements**: A Unix-based system (e.g., Linux, macOS).
+- **Compiler**: GCC or any standard C compiler.
+- **Knowledge**: Familiarity with UNIX system calls such as `fork()`, `pipe()`, `execve()`, `dup2()`, and working with file descriptors.
+- **Makefile**: You need to deliver a `Makefile` that compiles your project using the `-Wall`, `-Werror`, and `-Wextra` flags, without relinking unnecessary files.
+
+#### **Required Functions and Libraries**
+You are allowed to use the following functions:
+- `open()`, `close()`, `read()`, `write()`
+- `malloc()`, `free()`
+- `perror()`, `strerror()`
+- `access()`, `dup()`, `dup2()`
+- `execve()`, `exit()`, `fork()`, `pipe()`, `unlink()`
+- `wait()`, `waitpid()`
+
+Additionally, your project can use the `libft` library.
+
+### **Project Structure Overview**
+
+#### **File Descriptions**
+- **pipex.h**: This header file contains function prototypes, macros, and structure definitions that will be shared across the project files.
+- **pipex.c**: The core logic of the program, where the pipes, redirection, and execution of commands take place.
+- **utils.c**: Helper functions, such as string manipulation or memory management routines, to support the main program.
+- **Makefile**: The build script that compiles the project and handles common tasks like cleaning object files and rebuilding.
+
+
+### **Program Usage**
+
+#### **How to Run the Program**
+The `pipex` program takes the following command-line arguments:
+```bash
+./pipex infile "cmd1" "cmd2" outfile
+```
+- `infile`: The input file whose contents will be fed into `cmd1`.
+- `cmd1`: The first shell command that reads from the input file.
+- `cmd2`: The second shell command that reads the output of `cmd1`.
+- `outfile`: The output file where the result of `cmd2` will be written.
+
+#### **Example Commands**
+```bash
+./pipex infile "ls -l" "wc -l" outfile
+```
+This command reads the contents of `infile`, runs `ls -l`, passes its output to `wc -l`, and writes the result to `outfile`.
+
+#### **Expected Input and Output**
+- **Input**: The content of the `infile`.
+- **Output**: The result of the commands piped together, written to the `outfile`.
+
+
+### **Core Logic and Implementation**
+
+To understand the core logic of the `pipex` program, refer to the visual diagram provided. The diagram outlines the entire process, from setting up the environment to executing commands and handling pipes.
+
+Below is a brief overview of the steps:
+
+1. **Setting up the `PATH` Environment**:  
+   Retrieves and parses the `PATH` variable to locate executable commands.
+
+2. **Command Parsing and Validation**:  
+   Validates and locates each command, ensuring it's executable.
+
+3. **Pipe Creation and Redirection**:  
+   Creates pipes to link the output of the first command to the input of the second.
+
+4. **Forking Child Processes**:  
+   Two child processes are created to run the commands concurrently.
+
+5. **Executing Commands with `execve()`**:  
+   Executes the commands by replacing the current process with the specified program.
+
+6. **Closing File Descriptors**:  
+   Properly closes all file descriptors to prevent resource leaks.
+
+For a detailed breakdown of how each step is executed, please refer to the following  **visual diagram**.
 
 
 
+![Pipex project](https://github.com/user-attachments/assets/f85ee2a6-6f4f-4235-b728-973805c75491)
 
 
+### **Error Handling**
 
-## Tester - Mandatory Part
+#### **1. Common Errors and Handling**
+The program must gracefully handle the following:
+- **Invalid Command**: If a command is not found in the `PATH`, the program prints an error and exits.
+- **Permission Denied**: If the program cannot open the input/output files due to permissions, it must exit with a meaningful error message.
+- **Broken Pipe**: If `cmd1` fails, the pipe should not hang, and the program should terminate cleanly.
+
+#### **2. Systematic Error Messages**
+Custom error messages are displayed for invalid arguments, permission errors, or failed system calls. These messages are accompanied by an exit status to indicate failure.
+
+### **Memory Management**
+
+#### **1. Dynamic Memory Allocation and Deallocation**
+Any dynamically allocated memory (e.g., for storing command arguments) must be freed after use. Failure to do so will result in memory leaks.
+
+#### **2. Avoiding Memory Leaks**
+Tools like `valgrind` can be used to ensure there are no memory leaks in the program. All allocated memory should be tracked and released properly before the program exits.
+
+
+### Tester - Mandatory Part
 
 ### Non valid cases:
 
@@ -163,4 +306,8 @@
 - **Command**: `valgrind ./pipex infile "cat -n" "cat" outfile`
 - **Explanation**: `cat -n` displays each line with its line number, and `cat` writes it to `outfile`.
 
+
+
+
 ---
+
