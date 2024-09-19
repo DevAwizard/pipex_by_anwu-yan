@@ -1,7 +1,5 @@
 ![cover-pipex](https://github.com/user-attachments/assets/557e560b-87c0-4dd5-aaca-be94247a947b)
 
-### Table of Contents for Pipex Documentation
-
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
