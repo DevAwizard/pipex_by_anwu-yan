@@ -181,8 +181,6 @@ The `outfile` will contain:
 This output represents the number of lines in `infile`.
 
 
-This format should make it easier to read, with emojis to guide the user through each part. Let me know if you need more adjustments! 😊
-
 ### **🔍Core Logic and Implementation**
 
 To better understand the **core logic**, please refer to the **visual diagram** below, which outlines the entire process:
