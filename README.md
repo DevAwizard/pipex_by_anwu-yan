@@ -122,6 +122,67 @@ Use the following format to run the `pipex` program:
 
 #### Expected Input and Output
 
+#### **Expected Input** 📝
+
+This section explains the files and commands you need to provide when running the program.
+
+- **Input file (`infile`)** 📂:  
+  A file containing the input data. The content of this file will be passed to the first command (`cmd1`).  
+  *Example*: A file with a list of file names or text content.
+
+- **Commands** 🖥️:  
+  Two commands must be passed as arguments:
+  - **`cmd1`**: The first command reads from `infile`.
+  - **`cmd2`**: The second command processes the output of `cmd1`.  
+    *Example commands*: `ls -l`, `grep`, `wc -l`.
+
+- **Output file (`outfile`)** 💾:  
+  The final output of `cmd2` will be written here. If it doesn’t exist, it will be created. If it exists, it will be overwritten.  
+  *Example*: A text file that stores the result of the command chain.
+
+#### **Example Input** 🖊️
+```bash
+./pipex infile "cat" "wc -l" outfile
+```
+- **`infile`**: A file that contains some text.
+- **Command 1**: `cat` reads the content of `infile`.
+- **Command 2**: `wc -l` counts the number of lines.
+- **`outfile`**: The result (line count) will be saved here.
+
+
+#### **Expected Output** 🖨️
+
+This section describes what the output will look like after the program is executed.
+
+- **Standard Output** 💻:  
+  No output will be printed to the terminal. The results are saved directly to `outfile` (unless debugging).
+
+- **Output File Content** 📄:  
+  After execution, `outfile` will contain the result of the second command (`cmd2`).
+  - *Example*: If using `wc -l`, the output will be the line count of `infile`.
+
+- **Error Handling** ⚠️:  
+  If an error occurs (e.g., missing files, permission errors, invalid commands), an error message will be displayed, and the program will exit without modifying `outfile`.
+
+#### **Example Output** 📊
+```bash
+./pipex infile "cat" "wc -l" outfile
+```
+If the `infile` contains:
+```
+Hello World
+How are you?
+I'm learning Pipex.
+```
+The `outfile` will contain:
+```
+3
+```
+This output represents the number of lines in `infile`.
+
+
+This format should make it easier to read, with emojis to guide the user through each part. Let me know if you need more adjustments! 😊
+
 ### **🔍Core Logic and Implementation**
 
 To better understand the **core logic**, please refer to the **visual diagram** below, which outlines the entire process:
