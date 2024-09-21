@@ -185,7 +185,8 @@ This output represents the number of lines in `infile`.
 
 To better understand the **core logic**, please refer to the **visual diagram** below, which outlines the entire process:
 
-![Pipex project](https://github.com/user-attachments/assets/f85ee2a6-6f4f-4235-b728-973805c75491)
+![Pipex project](https://github.com/DevAwizard/pipex_by_anwu-yan/blob/main/pipex_visual_diagram.png)
+
 
 ### **Steps Overview**:
 1. **Setting up the `PATH` Environment** 🛠️  
